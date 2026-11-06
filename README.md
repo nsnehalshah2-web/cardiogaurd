@@ -6,7 +6,7 @@ CardioGuard is a heart-risk screening platform for **individuals and community h
 
 ## 🌐 Live Demo
 
-- https://tanishqtiwari1.github.io/CardioGuard/
+- https://nsnehalshah2-web.github.io/Cardioguard/
 
 ## 🚀 Features
 
