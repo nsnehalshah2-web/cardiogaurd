@@ -12,9 +12,9 @@ services:
       - key: CARDIOGUARD_SECRET_KEY
         generateValue: true
       - key: CORS_ORIGINS
-        value: https://tanishqtiwari1.github.io
+        value: https://nsnehalshah2-web.github.io
       - key: FRONTEND_URL
-        value: https://tanishqtiwari1.github.io/CardioGuard/
+        value: https://nsnehalshah2-web.github.io/Cardioguard/
       - key: RESEND_API_KEY
         sync: false
       - key: RESEND_FROM_EMAIL

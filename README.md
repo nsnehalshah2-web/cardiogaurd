@@ -230,7 +230,7 @@ CardioGuard Dashboard
 
 ## 👩‍💻 Author
 
-- Tanishq Tewari
+- Nehal Shah
 - Computer Science Engineering
 
 ## ⚠️ Disclaimer
