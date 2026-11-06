@@ -1,5 +1,5 @@
 import { NavLink, Link } from 'react-router-dom';
-import { Activity, BarChart3, ClipboardList, FileText, History, HousePlus, Lightbulb, LineChart, PanelLeftClose, PhoneCall, Siren, Stethoscope, Users, X } from 'lucide-react';
+import { Activity, BarChart3, ClipboardList, FileText, History, HousePlus, Lightbulb, LineChart, PanelLeftClose, PhoneCall, Siren, Stethoscope, Users, X, HeartPulse } from 'lucide-react';
 import { useT } from '../../i18n';
 
 const links = [
@@ -10,6 +10,7 @@ const links = [
   { to: '/specialists', labelKey: 'nav.specialists', icon: Stethoscope },
   { to: '/simulator', label: 'What-if lab', icon: Activity },
   { to: '/history', label: 'Health history', icon: History },
+  { to: '/health-journal', label: 'Measurements & reminders', icon: HeartPulse },
   { to: '/insights', label: 'Insights', icon: Lightbulb },
   { to: '/model-insights', label: 'Model insights', icon: LineChart },
   { to: '/reports', label: 'Reports', icon: FileText },

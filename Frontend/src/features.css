@@ -195,3 +195,82 @@
 @media print {
   .lang-toggle, .drawer-backdrop { display: none !important; }
 }
+
+/* Health journal and doctor-visit preparation */
+.health-journal-page, .reports-page { display: flex; flex-direction: column; gap: 20px; }
+.journal-section { display: flex; flex-direction: column; gap: 15px; }
+.journal-section-heading h2, .visit-preparation .panel-heading h2 { font-size: 20px; margin: 5px 0; }
+.journal-section-heading p, .visit-preparation .panel-heading p { color: var(--muted); font-size: 13px; line-height: 1.5; }
+.journal-trend-grid { display: grid; gap: 13px; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); }
+.trend-card { padding: 17px; }
+.trend-card-heading { align-items: flex-start; display: flex; justify-content: space-between; }
+.trend-card-heading div { display: flex; flex-direction: column; gap: 4px; }
+.trend-card-heading div > span, .trend-card-heading > span { color: var(--muted); font-size: 11px; }
+.trend-card-heading strong { font-size: 19px; }
+.trend-card svg { display: block; height: 105px; margin: 8px 0 0; overflow: visible; width: 100%; }
+.trend-card > small { color: var(--muted); font-size: 10px; }
+.journal-disclaimer { background: var(--c-f1f8f5); border-left: 3px solid var(--teal); border-radius: 0 8px 8px 0; color: var(--c-4d666b); font-size: 12px; line-height: 1.5; padding: 11px 14px; }
+.journal-columns { align-items: start; display: grid; gap: 15px; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+.journal-form, .journal-history, .reminder-form, .reminder-list, .visit-preparation { display: flex; flex-direction: column; gap: 13px; }
+.journal-form .panel-heading, .journal-history .panel-heading { margin: 0; }
+.journal-form .panel-heading h2, .journal-history .panel-heading h2 { font-size: 17px; margin-top: 6px; }
+.journal-form label, .reminder-form label, .prep-form label { color: var(--ink); display: flex; flex-direction: column; font-size: 12px; font-weight: 700; gap: 6px; }
+.journal-form input, .journal-form textarea, .reminder-form input, .reminder-form select, .reminder-form label > input, .prep-form textarea { background: var(--c-fbfdfc); border: 1px solid var(--line); border-radius: 8px; color: var(--ink); font-size: 13px; min-height: 40px; padding: 9px 11px; width: 100%; }
+.journal-form textarea, .prep-form textarea { resize: vertical; }
+.journal-input-grid { display: grid; gap: 11px; grid-template-columns: 1fr 1fr; }
+.journal-form .btn { align-self: flex-start; }
+.measurement-list, .reminder-list { display: flex; flex-direction: column; }
+.measurement-entry, .reminder-entry { align-items: flex-start; border-bottom: 1px solid var(--line); display: flex; gap: 12px; justify-content: space-between; padding: 13px 0; }
+.measurement-entry:last-child, .reminder-entry:last-child { border-bottom: 0; padding-bottom: 0; }
+.measurement-entry strong, .reminder-entry strong { font-size: 12px; }
+.measurement-entry p, .reminder-entry p { color: var(--teal-dark); font-size: 12px; margin-top: 5px; }
+.measurement-entry small, .reminder-entry small { color: var(--muted); display: block; font-size: 11px; margin-top: 4px; white-space: pre-wrap; }
+.measurement-entry .icon-btn { color: var(--muted); }
+.journal-empty { color: var(--muted); font-size: 13px; grid-column: 1 / -1; padding: 22px; }
+.journal-empty-copy { color: var(--muted); font-size: 13px; }
+.journal-feedback { align-items: center; border-radius: 8px; display: flex; font-size: 13px; gap: 13px; padding: 11px 14px; }
+.journal-feedback.error, .inline-error { background: var(--c-fdecea); color: var(--c-8f3424); }
+.journal-feedback.success, .inline-success { background: var(--c-f1f8f5); color: var(--teal-dark); }
+.journal-feedback .subtle-link { margin-left: auto; }
+.inline-error, .inline-success, .inline-notice { border-radius: 7px; font-size: 12px !important; line-height: 1.5; padding: 9px 11px; }
+.inline-error .subtle-link { background: none; border: 0; cursor: pointer; margin-left: 8px; }
+.reminder-section { border-top: 1px solid var(--line); margin-top: 8px; padding-top: 25px; }
+.reminder-form { align-items: end; display: grid; grid-template-columns: 1fr 1fr; }
+.reminder-form label:nth-child(3) { grid-column: 1 / -1; }
+.reminder-form .btn { align-self: end; justify-self: start; }
+.reminder-optin { align-items: center; display: flex; gap: 15px; justify-content: space-between; }
+.reminder-optin p, .reminder-delivery-note { color: var(--muted); font-size: 12px; line-height: 1.5; }
+.reminder-list h3 { font-size: 16px; }
+.reminder-status { border-radius: 999px; display: inline-block; font-size: 10px; font-weight: 700; margin-top: 7px; padding: 4px 8px; }
+.reminder-status.pending { background: var(--mint); color: var(--teal-dark); }
+.reminder-status.sent { background: var(--c-e5f0f5); color: var(--c-4b8396); }
+.reminder-status.off { background: var(--c-f2f8f6); color: var(--muted); }
+.reminder-delivery-note { margin: -4px 2px 0; }
+.reminder-setting { align-items: flex-start; }
+.reminder-setting-copy { flex: 1; }
+.reminder-setting-copy .inline-notice, .reminder-setting-copy .inline-error { margin-top: 8px; }
+.switch-control { align-items: center; color: var(--muted); display: flex; flex: 0 0 auto; font-size: 11px; gap: 7px; margin-left: auto; }
+.switch-control input { accent-color: var(--teal); height: 18px; width: 18px; }
+.sr-only { height: 1px; margin: -1px; overflow: hidden; position: absolute; width: 1px; clip: rect(0, 0, 0, 0); white-space: nowrap; }
+.visit-preparation .panel-heading { margin-bottom: 0; }
+.prep-form { display: flex; flex-direction: column; gap: 15px; }
+.prep-checklist { display: flex; flex-wrap: wrap; gap: 12px 24px; }
+.prep-checklist label { align-items: center; color: var(--ink); display: flex; flex-direction: row; font-size: 12px; gap: 8px; }
+.prep-checklist input { accent-color: var(--teal); height: 17px; width: 17px; }
+.prep-form .btn { align-self: flex-start; }
+.report-empty { margin: 0 auto; max-width: 920px; width: 100%; }
+.visit-preparation { margin: 0 auto; max-width: 920px; width: 100%; }
+
+@media (max-width: 800px) {
+  .journal-columns { grid-template-columns: 1fr; }
+  .reminder-form { grid-template-columns: 1fr; }
+  .reminder-form label:nth-child(3) { grid-column: auto; }
+}
+@media (max-width: 530px) {
+  .journal-input-grid { grid-template-columns: 1fr; }
+  .reminder-optin { align-items: flex-start; flex-direction: column; }
+  .reminder-setting { flex-wrap: wrap; }
+  .switch-control { margin-left: 48px; }
+  .measurement-entry, .reminder-entry { gap: 7px; }
+  .visit-preparation { padding: 18px; }
+}

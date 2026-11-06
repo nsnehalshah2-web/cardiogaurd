@@ -19,6 +19,7 @@ import ProtectedRoute from './components/auth/ProtectedRoute';
 import Emergency from './pages/Emergency';
 import HomeScreening from './pages/HomeScreening';
 import Community from './pages/Community';
+import HealthJournal from './pages/HealthJournal';
 import { LanguageProvider } from './i18n';
 // The map library is large, so this page is downloaded only when opened.
 const Specialists = lazy(() => import('./pages/Specialists'));
@@ -62,6 +63,7 @@ function App() {
           <Route path="/insights" element={<Insights />} />
           <Route path="/model-insights" element={<ModelInsights />} />
           <Route path="/reports" element={<Reports />} />
+          <Route path="/health-journal" element={<HealthJournal />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/settings" element={<Settings />} />
           </Route>

@@ -116,7 +116,7 @@ export function doctorQuestions(assessment, screening) {
   return questions.slice(0, 6);
 }
 
-export async function downloadDoctorReport({ userName, assessment, assessmentFactors, screening, history }) {
+export async function downloadDoctorReport({ userName, assessment, assessmentFactors, screening, history, visitPreparation }) {
   const w = await writer('Heart health report', `Prepared for ${userName || 'CardioGuard user'} to share with a doctor`);
 
   if (assessment) {
@@ -156,6 +156,26 @@ export async function downloadDoctorReport({ userName, assessment, assessmentFac
 
   w.heading('Questions to ask your doctor');
   w.bullets(doctorQuestions(assessment, screening));
+  if (visitPreparation) {
+    w.heading('Doctor-visit preparation');
+    w.rows([
+      ['Bring medication list', yesNo(visitPreparation.bring_medications)],
+      ['Bring test results', yesNo(visitPreparation.bring_test_results)],
+    ]);
+    if (visitPreparation.symptoms?.trim()) {
+      w.paragraph('Symptoms or concerns:', 10, MUTED);
+      w.paragraph(visitPreparation.symptoms.trim());
+    }
+    if (visitPreparation.medications?.trim()) {
+      w.paragraph('Medications:', 10, MUTED);
+      w.paragraph(visitPreparation.medications.trim());
+    }
+    const personalQuestions = (visitPreparation.questions || '').split(/\r?\n/).map((question) => question.trim()).filter(Boolean);
+    if (personalQuestions.length) {
+      w.paragraph('Your questions:', 10, MUTED);
+      w.bullets(personalQuestions);
+    }
+  }
 
   w.space();
   w.paragraph('This is an AI-generated educational assessment and is NOT a medical diagnosis. ', 9, INK);

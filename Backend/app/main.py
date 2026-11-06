@@ -9,11 +9,13 @@ from app.models.assessment import AssessmentHistory
 from app.models.community import Patient, Screening
 from app.models.sos import SosShare
 from app.models.password_reset import PasswordResetToken
+from app.models.health_journal import HealthMeasurement, HealthReminder, ReminderPreference, VisitPreparation
 from app.models.user import User
 from app.api.auth import router as auth_router
 from app.api.prediction import router as prediction_router
 from app.api.screening import router as screening_router
 from app.api.sos import router as sos_router
+from app.api.health_journal import router as health_journal_router
 
 app = FastAPI(
     title="CardioGuard AI API",
@@ -52,6 +54,7 @@ app.include_router(prediction_router, prefix="/api/v1")
 app.include_router(screening_router, prefix="/api/v1")
 app.include_router(sos_router, prefix="/api/v1")
 app.include_router(auth_router, prefix="/api/v1/auth")
+app.include_router(health_journal_router, prefix="/api/v1/health-journal")
 
 Base.metadata.create_all(bind=engine)
 

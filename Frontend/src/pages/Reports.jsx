@@ -5,7 +5,7 @@ import EmptyState from '../components/common/EmptyState';
 import RiskGauge from '../components/dashboard/RiskGauge';
 import { useAuth } from '../context/AuthContext';
 import useHistoryData from '../hooks/useHistoryData';
-import { getScreeningHistory, submitAssessment } from '../services/api';
+import { getScreeningHistory, getVisitPreparation, saveVisitPreparation, submitAssessment } from '../services/api';
 import { doctorQuestions, downloadDoctorReport } from '../services/pdfReport';
 import { defaultHealthData } from '../services/storage';
 
@@ -19,10 +19,21 @@ export default function Reports() {
   const { history, loading } = useHistoryData();
   const [screenings, setScreenings] = useState([]);
   const [factors, setFactors] = useState([]);
+  const [visitPreparation, setVisitPreparation] = useState(null);
+  const [prepError, setPrepError] = useState('');
+  const [prepLoading, setPrepLoading] = useState(true);
+  const [prepSaving, setPrepSaving] = useState(false);
+  const [prepSaved, setPrepSaved] = useState(false);
   const latest = history[0];
   const screening = screenings[0];
 
   useEffect(() => { getScreeningHistory().then(setScreenings).catch(() => {}); }, []);
+  useEffect(() => {
+    getVisitPreparation()
+      .then(setVisitPreparation)
+      .catch(() => setPrepError('We couldn’t load your doctor-visit preparation. Please retry before editing.'))
+      .finally(() => setPrepLoading(false));
+  }, []);
   useEffect(() => {
     if (!latest) return;
     // Re-run the latest assessment (without saving) to get which inputs pushed the estimate up.
@@ -32,17 +43,30 @@ export default function Reports() {
   }, [latest]);
 
   if (loading) return <div className="auth-loading"><div className="loading-spinner" /><span>Loading your private report...</span></div>;
-  if (!latest && !screening) return <div className="center-page"><EmptyState title="No report to review" text="Complete an assessment or a home screening to generate a report you can take to your doctor." /></div>;
-
   const trend = [
     ...history.map((item) => ({ date: item.created_at, risk: item.risk_probability, category: item.risk_category, kind: 'clinical' })),
     ...screenings.map((item) => ({ date: item.screened_at, risk: item.risk_probability, category: item.risk_category, kind: 'home' })),
   ].sort((a, b) => new Date(b.date) - new Date(a.date));
-  const download = () => downloadDoctorReport({ userName: user?.name, assessment: latest, assessmentFactors: factors, screening, history: trend });
+  const download = () => downloadDoctorReport({ userName: user?.name, assessment: latest, assessmentFactors: factors, screening, history: trend, visitPreparation });
+
+  async function savePreparation(event) {
+    event.preventDefault();
+    setPrepSaving(true);
+    setPrepError('');
+    setPrepSaved(false);
+    try {
+      setVisitPreparation(await saveVisitPreparation(visitPreparation));
+      setPrepSaved(true);
+    } catch (error) {
+      setPrepError(error.response?.data?.detail || 'We couldn’t save your preparation. Please try again.');
+    } finally {
+      setPrepSaving(false);
+    }
+  }
 
   return <div className="reports-page">
-    <div className="page-heading"><div><span className="eyebrow">Take this to your doctor</span><h1>Health report</h1><p>A summary of your results, what drives them, and questions to ask at your next visit.</p></div><div className="report-actions"><button className="btn btn-ghost" onClick={() => window.print()}><Printer size={16} /> Print</button><button className="btn btn-primary" onClick={download}><Download size={16} /> Download PDF</button></div></div>
-    <article className="report-sheet">
+    <div className="page-heading"><div><span className="eyebrow">Take this to your doctor</span><h1>Health report</h1><p>A summary of your results, what drives them, and questions to ask at your next visit.</p></div>{(latest || screening) && <div className="report-actions"><button className="btn btn-ghost" onClick={() => window.print()}><Printer size={16} /> Print</button><button className="btn btn-primary" onClick={download} disabled={prepLoading || Boolean(prepError)}><Download size={16} /> Download PDF</button></div>}</div>
+    {(latest || screening) ? <article className="report-sheet">
       <div className="report-header"><div className="brand-mark"><span className="brand-icon"><HeartPulse size={18} /></span><span className="brand-copy"><strong>Cardio<span>Guard</span></strong><small>AI health intelligence</small></span></div><span className="report-date">{new Date().toLocaleDateString(undefined, { month: 'long', day: 'numeric', year: 'numeric' })}</span></div>
       <div className="report-title"><div><span className="eyebrow">Personal health snapshot</span><h2>Prepared for {user?.name}</h2><p>Share this with a qualified doctor</p></div><div className="report-status"><ShieldCheck size={17} /> Educational estimate</div></div>
 
@@ -82,7 +106,23 @@ export default function Reports() {
         <ul className="question-list">{doctorQuestions(latest, screening).map((question) => <li key={question}>{question}</li>)}</ul>
       </div>
       <div className="report-footer"><FileText size={16} /> These are statistical estimates, not a diagnosis.</div>
-    </article>
+    </article> : <div className="panel report-empty"><EmptyState title="No report to review yet" text="Complete an assessment or a home screening to generate a report. You can still prepare notes for your doctor below." /></div>}
+
+    <section className="panel visit-preparation">
+      <div className="panel-heading"><div><span className="eyebrow">Doctor-visit preparation</span><h2>Checklist and notes</h2><p>Saved privately with your account and included in your doctor-ready PDF.</p></div></div>
+      {prepError && <p className="inline-error" role="alert">{prepError}{!prepLoading && <button type="button" className="subtle-link" onClick={() => { setPrepLoading(true); setPrepError(''); getVisitPreparation().then(setVisitPreparation).catch(() => setPrepError('We couldn’t load your preparation. Please try again.')).finally(() => setPrepLoading(false)); }}>Retry</button>}</p>}
+      {prepSaved && <p className="inline-success" role="status">Your doctor-visit preparation is saved.</p>}
+      {visitPreparation && <form className="prep-form" onSubmit={savePreparation}>
+        <div className="prep-checklist">
+          <label><input type="checkbox" checked={visitPreparation.bring_medications} onChange={(event) => setVisitPreparation({ ...visitPreparation, bring_medications: event.target.checked })} /> Bring medication list or packages</label>
+          <label><input type="checkbox" checked={visitPreparation.bring_test_results} onChange={(event) => setVisitPreparation({ ...visitPreparation, bring_test_results: event.target.checked })} /> Bring test results or previous records</label>
+        </div>
+        <label>Symptoms or concerns<textarea maxLength="4000" rows="3" value={visitPreparation.symptoms} onChange={(event) => setVisitPreparation({ ...visitPreparation, symptoms: event.target.value })} placeholder="What have you noticed, and when did it start?" /></label>
+        <label>Medications<textarea maxLength="4000" rows="3" value={visitPreparation.medications} onChange={(event) => setVisitPreparation({ ...visitPreparation, medications: event.target.value })} placeholder="Include name, dose, and how often you take it" /></label>
+        <label>Questions for your doctor<textarea maxLength="4000" rows="3" value={visitPreparation.questions} onChange={(event) => setVisitPreparation({ ...visitPreparation, questions: event.target.value })} placeholder="Write down what you want to ask" /></label>
+        <button className="btn btn-primary" type="submit" disabled={prepLoading || prepSaving}>{prepSaving ? 'Saving…' : 'Save visit preparation'}</button>
+      </form>}
+    </section>
     <Link className="subtle-link report-back" to="/dashboard">Back to overview</Link>
   </div>;
 }

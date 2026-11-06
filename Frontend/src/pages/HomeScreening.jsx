@@ -5,7 +5,7 @@ import ScreeningForm from '../components/screening/ScreeningForm';
 import ScreeningResult from '../components/screening/ScreeningResult';
 import { useAuth } from '../context/AuthContext';
 import { useT } from '../i18n';
-import { getScreeningHistory, submitScreening } from '../services/api';
+import { getScreeningHistory, getVisitPreparation, submitScreening } from '../services/api';
 import { downloadDoctorReport } from '../services/pdfReport';
 import { loadScreeningModel, predictScreening } from '../services/screeningModel';
 
@@ -18,6 +18,8 @@ export default function HomeScreening() {
   const [offline, setOffline] = useState(false);
   const [history, setHistory] = useState([]);
   const [error, setError] = useState('');
+  const [reportLoading, setReportLoading] = useState(false);
+  const [reportError, setReportError] = useState('');
 
   const refreshHistory = () => getScreeningHistory().then(setHistory).catch(() => {});
   useEffect(() => { refreshHistory(); loadScreeningModel().catch(() => {}); }, []);
@@ -45,13 +47,25 @@ export default function HomeScreening() {
   };
 
   const latestSaved = history[0];
+  const downloadReport = async () => {
+    setReportLoading(true);
+    setReportError('');
+    try {
+      const visitPreparation = await getVisitPreparation();
+      await downloadDoctorReport({ userName: user?.name, screening: latestSaved, visitPreparation });
+    } catch {
+      setReportError('We couldn’t load your doctor-visit preparation for the PDF. Please try again.');
+    } finally {
+      setReportLoading(false);
+    }
+  };
   return <div className="screening-page">
     <div className="page-heading compact-heading"><div><span className="eyebrow">{t('screen.eyebrow')}</span><h1>{t('screen.title')}</h1><p>{t('screen.text')}</p></div></div>
     {stage === 'emergency' && <EmergencyCheck onClear={() => setStage('form')} />}
     {stage === 'form' && <section className="panel">{error && <div className="form-error">{String(error)}</div>}<ScreeningForm initial={values} onSubmit={submit} /></section>}
     {stage === 'result' && result && <ScreeningResult result={result} values={values} offline={offline} showSpecialist actions={<>
       <button type="button" className="btn btn-ghost" onClick={() => setStage('form')}><RotateCcw size={16} /> {t('screen.again')}</button>
-      {!offline && latestSaved && <button type="button" className="btn btn-primary" onClick={() => downloadDoctorReport({ userName: user?.name, screening: latestSaved })}><Download size={16} /> {t('screen.report')}</button>}
+      {!offline && latestSaved && <><button type="button" className="btn btn-primary" disabled={reportLoading} onClick={downloadReport}><Download size={16} /> {reportLoading ? 'Preparing PDF…' : t('screen.report')}</button>{reportError && <span className="inline-error" role="alert">{reportError}</span>}</>}
     </>} />}
     {history.length > 0 && <section className="panel screening-history">
       <h3>{t('screen.history')}</h3>

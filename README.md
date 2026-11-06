@@ -18,6 +18,9 @@ CardioGuard is a heart-risk screening platform for **individuals and community h
 - 🇮🇳 **Hindi and English** for screening, community and emergency pages.
 - 📄 **Fill from a lab report:** photograph or upload a blood test, BP or ECG report; values are read in the browser (OCR) and shown for checking before they fill the form. The report never leaves the device.
 - 🩺 **Report for your doctor (PDF):** results, main contributing factors, trend over time, and personalised questions to ask.
+- 📈 **Health journal:** dated blood-pressure, weight and heart-rate entries with personal trends kept separate from risk estimates.
+- 🔔 **Opt-in follow-up emails:** schedule a one-time screening or referral reminder, with controls to cancel reminders or disable email in Settings.
+- 📝 **Doctor-visit preparation:** save a checklist, symptoms, medications and questions to include in the doctor-ready PDF.
 - 🆘 **One-tap SOS:** calls 108, then sends family a WhatsApp or SMS message with a private live-location link and the route to the fastest hospital by road. No login needed. The location is deleted when SOS ends or after 6 hours.
 - 🪪 **ER handoff card:** medicines, allergies, conditions, CardioGuard results and symptom start time, shown on screen and as a QR code. The details travel inside the QR link and stay out of any database.
 - 🗺️ **Find a specialist:** after a result, find nearby cardiology services, hospitals and clinics on an interactive map (real OpenStreetMap data, no invented doctors or ratings). Use your location or type a city, area or PIN code; filter, sort, get directions, call, and share your assessment report. Only an approximate (~1 km) location leaves the device and nothing is stored.
@@ -166,6 +169,10 @@ The Pages build uses the production API URL configured as the frontend's product
 The Render backend is configured in the root `render.yaml`. Keep its startup command at the repository root with `PYTHONPATH=Backend`; changing into `Backend/` changes the relative SQLite database path and can prevent the service from starting. The frontend URL in this file must match the repository's case-sensitive GitHub Pages path.
 
 Render's free web-service plan automatically spins down after inactivity. This repository does not run scheduled keepalive pings to evade that platform limit; a paid always-on service plan is needed to avoid cold starts.
+
+Follow-up reminder emails use the hourly GitHub Actions workflow in `.github/workflows/dispatch-reminders.yml`. Configure `RESEND_API_KEY` and `RESEND_FROM_EMAIL` on the Render service, and set the same high-entropy `REMINDER_JOB_TOKEN` value as a Render environment variable and a GitHub Actions repository secret. The workflow makes a real reminder-dispatch request (not a keepalive); a sleeping free service may cold-start and delivery can be delayed. Email content is generic and excludes measurement values, notes and referral details. Users must explicitly opt in under Settings.
+
+The health journal and visit-preparation records use account-scoped backend database tables. The current Render blueprint uses SQLite on the free service's ephemeral filesystem; use a durable database before relying on these records across service replacement or redeployments.
 
 ## 🔗 System Architecture
 

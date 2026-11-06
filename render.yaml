@@ -19,3 +19,5 @@ services:
         sync: false
       - key: RESEND_FROM_EMAIL
         sync: false
+      - key: REMINDER_JOB_TOKEN
+        sync: false

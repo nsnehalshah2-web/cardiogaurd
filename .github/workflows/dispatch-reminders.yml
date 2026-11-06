@@ -1,0 +1,27 @@
+name: Dispatch CardioGuard reminders
+
+on:
+  schedule:
+    - cron: '17 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: dispatch-reminders
+  cancel-in-progress: false
+
+jobs:
+  dispatch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send due reminders
+        env:
+          REMINDER_JOB_TOKEN: ${{ secrets.REMINDER_JOB_TOKEN }}
+        run: |
+          test -n "$REMINDER_JOB_TOKEN" || { echo "REMINDER_JOB_TOKEN secret is required"; exit 1; }
+          curl --fail-with-body --silent --show-error --retry 10 --retry-delay 10 --retry-connrefused --max-time 300 \
+            -X POST \
+            -H "Authorization: Bearer $REMINDER_JOB_TOKEN" \
+            https://cardioguard-api-noup.onrender.com/api/v1/health-journal/reminders/dispatch

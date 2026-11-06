@@ -61,6 +61,16 @@ export const syncCommunity = async (batch) => (await api.post('/community/sync',
 export const getPatients = async () => (await api.get('/community/patients')).data;
 export const getPatient = async (id) => (await api.get(`/community/patients/${id}`)).data;
 export const updateReferral = async (screeningId, status) => (await api.patch(`/community/screenings/${screeningId}`, { referral_status: status })).data;
+export const getMeasurements = async () => (await api.get('/health-journal/measurements')).data;
+export const addMeasurement = async (measurement) => (await api.post('/health-journal/measurements', measurement)).data;
+export const deleteMeasurement = async (id) => api.delete(`/health-journal/measurements/${id}`);
+export const getReminders = async () => (await api.get('/health-journal/reminders')).data;
+export const addReminder = async (reminder) => (await api.post('/health-journal/reminders', reminder)).data;
+export const updateReminder = async (id, changes) => (await api.patch(`/health-journal/reminders/${id}`, changes)).data;
+export const getReminderPreferences = async () => (await api.get('/health-journal/reminder-preferences')).data;
+export const updateReminderPreferences = async (changes) => (await api.put('/health-journal/reminder-preferences', changes)).data;
+export const getVisitPreparation = async () => (await api.get('/health-journal/visit-preparation')).data;
+export const saveVisitPreparation = async (preparation) => (await api.put('/health-journal/visit-preparation', preparation)).data;
 
 const sosRequest = { timeout: 20000 };
 export const updateSosShare = async (id, key, data) => (await api.put(`/sos/${id}`, data, { ...sosRequest, headers: { 'X-SOS-Key': key } })).data;
