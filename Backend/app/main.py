@@ -16,6 +16,7 @@ from app.api.prediction import router as prediction_router
 from app.api.screening import router as screening_router
 from app.api.sos import router as sos_router
 from app.api.health_journal import router as health_journal_router
+from app.api.one_time_purge import router as one_time_purge_router
 
 app = FastAPI(
     title="CardioGuard AI API",
@@ -55,6 +56,7 @@ app.include_router(screening_router, prefix="/api/v1")
 app.include_router(sos_router, prefix="/api/v1")
 app.include_router(auth_router, prefix="/api/v1/auth")
 app.include_router(health_journal_router, prefix="/api/v1/health-journal")
+app.include_router(one_time_purge_router, prefix="/api/v1/admin")
 
 Base.metadata.create_all(bind=engine)
 
