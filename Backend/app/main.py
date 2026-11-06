@@ -1,4 +1,5 @@
 import os
+from urllib.parse import urlsplit
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -20,14 +21,24 @@ app = FastAPI(
     version="1.0.0"
 )
 
-cors_origins = [
-    origin.strip()
-    for origin in os.getenv(
-        "CORS_ORIGINS",
-        "http://localhost:5173,http://localhost:5174,http://127.0.0.1:5173,http://127.0.0.1:5174,https://nsnehalshah2-web.github.io",
-    ).split(",")
-    if origin.strip()
-]
+def _get_cors_origins() -> list[str]:
+    origins = [
+        origin.strip()
+        for origin in os.getenv(
+            "CORS_ORIGINS",
+            "http://localhost:5173,http://localhost:5174,http://127.0.0.1:5173,http://127.0.0.1:5174,https://nsnehalshah2-web.github.io",
+        ).split(",")
+        if origin.strip()
+    ]
+    frontend = urlsplit(os.getenv("FRONTEND_URL", "https://nsnehalshah2-web.github.io/Cardioguard/"))
+    if frontend.scheme in {"http", "https"} and frontend.netloc:
+        frontend_origin = f"{frontend.scheme}://{frontend.netloc}"
+        if frontend_origin not in origins:
+            origins.append(frontend_origin)
+    return origins
+
+
+cors_origins = _get_cors_origins()
 
 app.add_middleware(
     CORSMiddleware,
