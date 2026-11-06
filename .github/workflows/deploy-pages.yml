@@ -33,20 +33,14 @@ jobs:
         working-directory: Frontend
         run: npm ci
 
-      - name: Require deployed API URL
-        env:
-          VITE_API_URL: ${{ secrets.VITE_API_URL }}
-        run: test -n "$VITE_API_URL"
-
       - name: Build frontend
         working-directory: Frontend
-        env:
-          VITE_API_URL: ${{ secrets.VITE_API_URL }}
         run: |
           rm -rf dist
           npm run build
           test -f dist/index.html
           test -n "$(find dist/assets -type f -name '*.js' -print -quit)"
+          grep -R -F -q 'https://cardioguard-api-noup.onrender.com/api/v1' dist/assets --include='*.js'
 
       - name: Configure Pages
         uses: actions/configure-pages@v5

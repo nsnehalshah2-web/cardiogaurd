@@ -14,7 +14,7 @@ services:
       - key: CORS_ORIGINS
         value: https://nsnehalshah2-web.github.io
       - key: FRONTEND_URL
-        value: https://nsnehalshah2-web.github.io/Cardioguard/
+        value: https://nsnehalshah2-web.github.io/cardiogaurd/
       - key: RESEND_API_KEY
         sync: false
       - key: RESEND_FROM_EMAIL

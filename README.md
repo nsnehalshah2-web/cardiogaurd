@@ -159,6 +159,14 @@ CardioGuard Dashboard
 - Frontend Deployment: GitHub Pages
 - Backend Deployment: Render
 
+## Deployment
+
+The Pages build uses the production API URL configured as the frontend's production fallback in `Frontend/src/services/api.js`. The deployment workflow verifies that URL is present in the generated bundle and does not depend on a separately maintained API URL secret.
+
+The Render backend is configured in the root `render.yaml`. Keep its startup command at the repository root with `PYTHONPATH=Backend`; changing into `Backend/` changes the relative SQLite database path and can prevent the service from starting. The frontend URL in this file must match the repository's case-sensitive GitHub Pages path.
+
+Render's free web-service plan automatically spins down after inactivity. This repository does not run scheduled keepalive pings to evade that platform limit; a paid always-on service plan is needed to avoid cold starts.
+
 ## 🔗 System Architecture
 
 ```mermaid
