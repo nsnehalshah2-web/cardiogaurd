@@ -1,0 +1,14 @@
+fastapi
+uvicorn
+pydantic
+sqlalchemy
+pymysql
+xgboost
+scikit-learn
+pandas
+numpy
+shap
+python-multipart
+bcrypt
+python-jose[cryptography]
+email-validator

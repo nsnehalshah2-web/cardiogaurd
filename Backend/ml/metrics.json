@@ -1,0 +1,204 @@
+{
+  "evaluation_method": "Stratified held-out test split (20%, never used for training or tuning); 5-fold cross-validation accuracy on the training set: 81.2% \u00b1 3.5%",
+  "dataset": "UCI Heart Disease database: 918 real patients from Cleveland, Hungary, Switzerland and VA Long Beach",
+  "sample_count": 184,
+  "train_count": 734,
+  "cv_accuracy_mean": 0.812,
+  "cv_accuracy_std": 0.0349,
+  "best_params": {
+    "learning_rate": 0.02,
+    "max_depth": 2,
+    "min_child_weight": 3,
+    "n_estimators": 400
+  },
+  "metrics": {
+    "accuracy": 0.8207,
+    "precision": 0.835,
+    "recall": 0.8431,
+    "f1_score": 0.839,
+    "roc_auc": 0.9149
+  },
+  "confusion_matrix": [
+    [
+      65,
+      17
+    ],
+    [
+      16,
+      86
+    ]
+  ],
+  "confusion_matrix_labels": [
+    "No detected disease",
+    "Detected disease"
+  ],
+  "feature_importance": [
+    {
+      "feature": "exang",
+      "importance": 0.25401
+    },
+    {
+      "feature": "cp",
+      "importance": 0.237362
+    },
+    {
+      "feature": "sex",
+      "importance": 0.09522
+    },
+    {
+      "feature": "oldpeak",
+      "importance": 0.087086
+    },
+    {
+      "feature": "thalach",
+      "importance": 0.073426
+    },
+    {
+      "feature": "age",
+      "importance": 0.072355
+    },
+    {
+      "feature": "chol",
+      "importance": 0.05984
+    },
+    {
+      "feature": "fbs",
+      "importance": 0.057838
+    },
+    {
+      "feature": "restecg",
+      "importance": 0.032375
+    },
+    {
+      "feature": "trestbps",
+      "importance": 0.030489
+    }
+  ],
+  "calibration": {
+    "brier_score": 0.1166,
+    "bins": [
+      {
+        "predicted": 0.0705,
+        "observed": 0.0435
+      },
+      {
+        "predicted": 0.156,
+        "observed": 0.0435
+      },
+      {
+        "predicted": 0.2983,
+        "observed": 0.2609
+      },
+      {
+        "predicted": 0.5057,
+        "observed": 0.6087
+      },
+      {
+        "predicted": 0.7072,
+        "observed": 0.6522
+      },
+      {
+        "predicted": 0.8408,
+        "observed": 0.9565
+      },
+      {
+        "predicted": 0.919,
+        "observed": 0.8696
+      },
+      {
+        "predicted": 0.9588,
+        "observed": 1.0
+      }
+    ]
+  },
+  "fairness": {
+    "threshold": 0.5,
+    "by_sex": [
+      {
+        "group": "Men",
+        "count": 149,
+        "positive_rate": 0.6309,
+        "mean_predicted": 0.6216,
+        "accuracy": 0.8054,
+        "recall": 0.8511,
+        "roc_auc": 0.8994
+      },
+      {
+        "group": "Women",
+        "count": 35,
+        "positive_rate": 0.2286,
+        "mean_predicted": 0.2822,
+        "accuracy": 0.8857,
+        "recall": 0.75,
+        "roc_auc": 0.9074
+      }
+    ],
+    "by_age": [
+      {
+        "group": "50-59",
+        "count": 72,
+        "positive_rate": 0.5,
+        "mean_predicted": 0.5574,
+        "accuracy": 0.7917,
+        "recall": 0.8611,
+        "roc_auc": 0.8897
+      },
+      {
+        "group": "60 and over",
+        "count": 53,
+        "positive_rate": 0.7736,
+        "mean_predicted": 0.7371,
+        "accuracy": 0.8302,
+        "recall": 0.9268,
+        "roc_auc": 0.8923
+      },
+      {
+        "group": "Under 50",
+        "count": 59,
+        "positive_rate": 0.4237,
+        "mean_predicted": 0.3948,
+        "accuracy": 0.8475,
+        "recall": 0.68,
+        "roc_auc": 0.9553
+      }
+    ],
+    "by_hospital": [
+      {
+        "group": "Cleveland",
+        "count": 55,
+        "positive_rate": 0.4727,
+        "mean_predicted": 0.4743,
+        "accuracy": 0.8364,
+        "recall": 0.8077,
+        "roc_auc": 0.9271
+      },
+      {
+        "group": "Hungary",
+        "count": 64,
+        "positive_rate": 0.3438,
+        "mean_predicted": 0.4173,
+        "accuracy": 0.7969,
+        "recall": 0.7273,
+        "roc_auc": 0.8777
+      },
+      {
+        "group": "Switzerland",
+        "count": 27,
+        "positive_rate": 1.0,
+        "mean_predicted": 0.8516,
+        "accuracy": 0.9259,
+        "recall": 0.9259,
+        "roc_auc": null
+      },
+      {
+        "group": "VA Long Beach",
+        "count": 38,
+        "positive_rate": 0.7105,
+        "mean_predicted": 0.7028,
+        "accuracy": 0.7632,
+        "recall": 0.8889,
+        "roc_auc": 0.8687
+      }
+    ]
+  }
+}

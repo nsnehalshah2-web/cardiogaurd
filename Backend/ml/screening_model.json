@@ -1,0 +1,202 @@
+{
+  "name": "CardioGuard home screening model",
+  "outcome": "Coronary heart disease within 10 years",
+  "dataset": "Framingham Heart Study teaching dataset: 4240 participants, 644 developed coronary heart disease within 10 years",
+  "evaluation_method": "Stratified held-out test split (20%, never used for training); 5-fold cross-validation ROC-AUC on the training set: 0.732 \u00b1 0.033",
+  "train_count": 3392,
+  "sample_count": 848,
+  "features": [
+    "age",
+    "sex",
+    "smoker",
+    "cigs_per_day",
+    "bp_medication",
+    "prior_stroke",
+    "hypertension",
+    "diabetes",
+    "systolic_bp",
+    "bmi"
+  ],
+  "medians": [
+    49.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    128.0,
+    25.38
+  ],
+  "means": [
+    49.663915,
+    0.428656,
+    0.49204,
+    8.959021,
+    0.028302,
+    0.006486,
+    0.310436,
+    0.025943,
+    132.439858,
+    25.824534
+  ],
+  "scales": [
+    8.571716,
+    0.494884,
+    0.499937,
+    11.918123,
+    0.165834,
+    0.080273,
+    0.462672,
+    0.158966,
+    22.032912,
+    4.115372
+  ],
+  "coefficients": [
+    0.589999,
+    0.211093,
+    -0.007338,
+    0.267334,
+    0.068918,
+    0.094235,
+    0.063146,
+    0.120016,
+    0.335038,
+    0.00939
+  ],
+  "intercept": -1.984957,
+  "thresholds": {
+    "moderate": 0.1,
+    "high": 0.2
+  },
+  "metrics": {
+    "roc_auc": 0.705,
+    "cv_roc_auc_mean": 0.7316,
+    "cv_roc_auc_std": 0.0333,
+    "base_rate": 0.1519
+  },
+  "operating_points": [
+    {
+      "threshold": 0.1,
+      "sensitivity": 0.7984,
+      "specificity": 0.5049,
+      "flagged_share": 0.5413,
+      "confusion_matrix": [
+        [
+          363,
+          356
+        ],
+        [
+          26,
+          103
+        ]
+      ]
+    },
+    {
+      "threshold": 0.2,
+      "sensitivity": 0.4574,
+      "specificity": 0.7955,
+      "flagged_share": 0.2429,
+      "confusion_matrix": [
+        [
+          572,
+          147
+        ],
+        [
+          70,
+          59
+        ]
+      ]
+    }
+  ],
+  "calibration": {
+    "brier_score": 0.1216,
+    "bins": [
+      {
+        "predicted": 0.0339,
+        "observed": 0.0377
+      },
+      {
+        "predicted": 0.055,
+        "observed": 0.0566
+      },
+      {
+        "predicted": 0.0722,
+        "observed": 0.0755
+      },
+      {
+        "predicted": 0.0951,
+        "observed": 0.1132
+      },
+      {
+        "predicted": 0.1266,
+        "observed": 0.1698
+      },
+      {
+        "predicted": 0.1661,
+        "observed": 0.2075
+      },
+      {
+        "predicted": 0.2368,
+        "observed": 0.1981
+      },
+      {
+        "predicted": 0.3982,
+        "observed": 0.3585
+      }
+    ]
+  },
+  "fairness": {
+    "threshold": 0.1,
+    "by_sex": [
+      {
+        "group": "Men",
+        "count": 366,
+        "positive_rate": 0.2104,
+        "mean_predicted": 0.1823,
+        "accuracy": 0.4617,
+        "recall": 0.8701,
+        "roc_auc": 0.6853
+      },
+      {
+        "group": "Women",
+        "count": 482,
+        "positive_rate": 0.1079,
+        "mean_predicted": 0.122,
+        "accuracy": 0.6162,
+        "recall": 0.6923,
+        "roc_auc": 0.6863
+      }
+    ],
+    "by_age": [
+      {
+        "group": "50-59",
+        "count": 262,
+        "positive_rate": 0.187,
+        "mean_predicted": 0.1856,
+        "accuracy": 0.3053,
+        "recall": 0.9388,
+        "roc_auc": 0.651
+      },
+      {
+        "group": "60 and over",
+        "count": 125,
+        "positive_rate": 0.24,
+        "mean_predicted": 0.3102,
+        "accuracy": 0.24,
+        "recall": 1.0,
+        "roc_auc": 0.6526
+      },
+      {
+        "group": "Under 50",
+        "count": 461,
+        "positive_rate": 0.1085,
+        "mean_predicted": 0.0827,
+        "accuracy": 0.7722,
+        "recall": 0.54,
+        "roc_auc": 0.7186
+      }
+    ]
+  }
+}

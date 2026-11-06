@@ -1,0 +1,4 @@
+import { Bell, LockKeyhole, SlidersHorizontal } from 'lucide-react';
+
+export default function Settings() { return <div className="settings-page"><div className="page-heading"><div><span className="eyebrow">Workspace preferences</span><h1>Settings</h1><p>Keep your CardioGuard experience focused and private.</p></div></div><section className="panel settings-list"><Setting icon={Bell} title="Notifications" text="Assessment reminders and account updates" /><Setting icon={LockKeyhole} title="Security" text="Your session uses a signed JWT and expires automatically" /><Setting icon={SlidersHorizontal} title="Assessment preferences" text="Default clinical inputs are used only as a starting point" /></section></div>; }
+function Setting({ icon: Icon, title, text }) { return <div className="setting-row"><span className="setting-icon"><Icon size={18} /></span><div><strong>{title}</strong><p>{text}</p></div><span className="setting-status">Active</span></div>; }
