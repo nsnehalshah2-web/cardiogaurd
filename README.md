@@ -6,7 +6,7 @@ CardioGuard is a heart-risk screening platform for **individuals and community h
 
 ## 🌐 Live Demo
 
-- https://tanishqtiwari1.github.io/CardioGuard/
+- 
 
 ## 🚀 Features
 
@@ -265,7 +265,7 @@ CardioGuard Dashboard
 
 ## 👩‍💻 Author
 
-- Tanishq Tewari
+- Nehal Shah
 - Computer Science Engineering
 
 ## ⚠️ Disclaimer
